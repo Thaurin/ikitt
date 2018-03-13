@@ -1,0 +1,124 @@
+
+TODO (urgentie hoog)
+
+CONFIG
+!! FIX crash when you tap row, go into list, then back and tap same row again
+
+
+!!!! FIX FIRST
+!!!! okay, tags on switch conflict with other use of tag property!!
+!!!! okay, saving switches doesn't work, related????
+
+
+- Fix types in Defaults.plist and UserDefaults.plist instead of all string? (bool!)
+- fix colour of value in config screen (like iPhone settings screen)
+- fix selection tableviews to be able to select
+- fix config switch to not open selection tableview
+- add config file loading/saving
+- implement config settings in app
+	! if in dashboard speed unit is tapped, also change settings
+- Read config screen hierachy from plist file
+
+? Drop support for iPhoneOS 2.2.1? Blog about it to ask?
+	! Set properties to nil in viewDidUnload if you do!
+! Tweak startup animation/timer
+! Look at TODO from Google Docs!
+? Make random play repeat itself less often (keep history)
+
+??? weirdness, why can't I reuse ConfigSelectionViewController in ConfigFirstViewController? ???
+	(I get the same list items in every config row)
+
+TODO iKITT (Google Docs)
+
+Verwerken:
+"With the ability to swipe between consoles with full interaction with the dash, sunroof, gearshift, consoles. And add some of the original  computer graphics kitt would display on his tv dash when running a scan in a 3D wireframe formatt." --Clive
+
+High priority/show stoppers:
+
+X Change version in logo to 1.2
+- Flare up KITT for a bit at startup animation!
+- Idea: add a mode button with: samples, shuffle, mic
+- Maybe: make GPS show speed faster, less accurate. Possible?
+- Add options screen
+    * Sample set (KITT, KARR, Spanish, Italian)
+    * Voicebox (1st season, KITT, KARR)
+    * Random interval (min/max?)
+    * Dashboard LED function (speed/RPM)
+    * Dashboard LED colours?
+    * Start-up sound
+    * Sound on speed/LED change in dashboard? use looping sample instead of one play for each led change
+- Improve dashboard/speed-o-meter graphics/background
+- Increase KITT/KARR/etc. voicebox number of frames
+- Make it so that adjusting volume always changes playback volume, not just when a sample is playing
+- Take better voicebox crops so full-screen is more aligned / or just zoom in further
+- Put in timed random KITT voice player
+- Find better start-up sound(s), make it configurable (turbo boost, start-up, woosh)
+- Try and enhance portrait/landscape rotation animation with fade in/out
+- Add season 1 voiceboxes
+- Improve heading meter, add meter option that doesn't fill left
+- Add KITT scanner light thing when device turns clock-wise
+- Add Super Pursuit Mode
+- Configurable samples playing at configurable speeds in speed-o-meter mode
+- Activate Turbo Boost based on configurable speed?
+- Make the dashboard mode with a reverse mirror mode so it reflects off the inside of your windsheld when you lay the iPhone on top off the dash like the iHud app.
+- Fix stupid random sample calculation, can just use random % 8
+
+Medium
+- High res voicebox images?
+- Re-revisit sample choice and quality
+- Find/use better KITT phone beeps
+
+Low priority/clean up:
+- Use AudioQueue instead of AVAudioPlayer?
+- Separate voicebox with its own view controller
+
+Changes after 1.1:
+- Added configuration screen
+
+Changes after 1.0:
+- Made various tweaks and enhancements to graphics
+- Added text on all buttons. iKITT looks more authentic than ever!
+- Small tweaks to GPS code
+- Fixed some issues pertaining to memory handling (no more low-memory warnings!)
+- Changed start-up sound to new, more authentic sound
+- Fake RPM LEDs now indicate speed instead
+- Fixes to miscellaneous other bugs
+
+Done:
+X Implement middle buttons w/ 3 differently pitched beeps
+X Implement double tap on voice box to zoom in/out
+X Implement single tap on voice box to play random sample
+X Figure out class-wide variable definitions so you can define and then access them anywhere in the class
+X Make generic playSample:withMetering:
+X Improve responsiveness of info button--make frame bigger
+
+X Disable screen dim in dashboard: [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
+
+X Be able to switch between km/h and m/h in dashboard
+
+X Implement RPM in dashboard
+
+X Double tap on speed display to zoom in/out
+
+X In voicebox mode, shake for random sample
+X Add button to website on info page
+X Fade in/scroll in logo, and wait with middle buttons to turn on until after intro animation
+X Better dashboard leds
+X Change/remove gps status bar, add some sort of signal strength indicator
+X Animate changing speed/rpm between gps updates in dashboard
+
+Done beta 2:
+- Fixed bug that messed up gps speed accuracy in dashboard
+- Retouched, improved and edited all samples
+- Added 16 KITT voice samples for a total of 24 (3 pages)
+- Added KITT woosh sound at startup
+- Better dtmf sounds for red/yellow/blue buttons, taken from the show
+- Gave all KITT samples a good tune up in CoolEdit Pro
+- Improved logo
+- Vertically alligned dashboard speed font
+- Improved dashboard graphics
+- Added sound when speed changes (click sound from show)
+- Made LED font image for km/h and mph instead of label to get the correct LED font
+- Affed led meters to dashboard for assorted GPS location information
+- Play turbo boost sound when phone is shaken
+- Added 512x512 iTunes artwork

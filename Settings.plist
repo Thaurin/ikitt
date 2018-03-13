@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Test</key>
+	<array>
+		<string>One</string>
+		<string>Two</string>
+	</array>
+	<key>Settings</key>
+	<array>
+		<dict>
+			<key>SectionName</key>
+			<string>General</string>
+			<key>SectionRows</key>
+			<array>
+				<dict>
+					<key>Type</key>
+					<string>List</string>
+					<key>Title</key>
+					<string>Start-up sound</string>
+					<key>Key</key>
+					<string>startup_sound</string>
+					<key>Items</key>
+					<array>
+						<string>Woosh</string>
+						<string>Beeps</string>
+					</array>
+				</dict>
+				<dict>
+					<key>Type</key>
+					<string>List</string>
+					<key>Title</key>
+					<string>Sample set</string>
+					<key>Key</key>
+					<string>sample_set</string>
+					<key>Items</key>
+					<array>
+						<string>KITT</string>
+						<string>KARR</string>
+						<string>Spanish</string>
+					</array>
+				</dict>
+				<dict>
+					<key>Type</key>
+					<string>List</string>
+					<key>Title</key>
+					<string>Voicebox style</string>
+					<key>Key</key>
+					<string>voicebox_style</string>
+					<key>Items</key>
+					<array>
+						<string>1st season</string>
+						<string>2nd-4th season</string>
+						<string>KARR</string>
+					</array>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>SectionName</key>
+			<string>Shuffle</string>
+			<key>SectionRows</key>
+			<array>
+				<dict>
+					<key>Type</key>
+					<string>Switch</string>
+					<key>Title</key>
+					<string>Shuffle</string>
+					<key>Key</key>
+					<string>shuffle_enabled</string>
+				</dict>
+				<dict>
+					<key>Type</key>
+					<string>List</string>
+					<key>Title</key>
+					<string>Shuffle interval</string>
+					<key>Key</key>
+					<string>shuffle_interval</string>
+					<key>Items</key>
+					<array>
+						<string>3-7 sec</string>
+						<string>7-15 sec</string>
+						<string>10-25 sec</string>
+						<string>30-60 sec</string>
+					</array>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>SectionName</key>
+			<string>Dashboard</string>
+			<key>SectionRows</key>
+			<array>
+				<dict>
+					<key>Type</key>
+					<string>List</string>
+					<key>Title</key>
+					<string>Speed unit</string>
+					<key>Key</key>
+					<string>speed_unit</string>
+					<key>Items</key>
+					<array>
+						<string>km/h</string>
+						<string>mph</string>
+					</array>
+				</dict>
+				<dict>
+					<key>Type</key>
+					<string>List</string>
+					<key>Title</key>
+					<string>LED function</string>
+					<key>Key</key>
+					<string>led_function</string>
+					<key>Items</key>
+					<array>
+						<string>Speed</string>
+						<string>Fake RPM</string>
+					</array>
+				</dict>
+				<dict>
+					<key>Type</key>
+					<string>Switch</string>
+					<key>Title</key>
+					<string>LED sound</string>
+					<key>Key</key>
+					<string>ledsound_enabled</string>
+				</dict>
+			</array>
+		</dict>
+	</array>
+</dict>
+</plist>

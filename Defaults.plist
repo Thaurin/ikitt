@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>startup_sound</key>
+	<string>0</string>
+	<key>sample_set</key>
+	<string>1</string>
+	<key>voicebox_style</key>
+	<string>1</string>
+	<key>shuffle_enabled</key>
+	<string>0</string>
+	<key>shuffle_interval</key>
+	<string>1</string>
+	<key>speed_unit</key>
+	<string>1</string>
+	<key>led_function</key>
+	<string>1</string>
+	<key>ledsound_enabled</key>
+	<string>1</string>
+</dict>
+</plist>
