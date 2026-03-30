@@ -3,11 +3,15 @@
   "builds": [
     { "src": "index.html", "use": "@vercel/static" },
     { "src": "manifest.json", "use": "@vercel/static" },
-    { "src": "sw.json", "use": "@vercel/static" },
+    { "src": "sw.js", "use": "@vercel/static" },
     { "src": "**/*.png", "use": "@vercel/static" },
     { "src": "**/*.wav", "use": "@vercel/static" }
   ],
   "routes": [
+    { "src": "/sw.js", "headers": { "Cache-Control": "no-cache, no-store, must-revalidate" } },
+    { "src": "/index.html", "headers": { "Cache-Control": "no-cache, no-store, must-revalidate" } },
+    { "src": "/manifest.json", "headers": { "Cache-Control": "no-cache, no-store, must-revalidate" } },
+    { "src": "/(.*\\.(png|wav))$", "headers": { "Cache-Control": "public, max-age=31536000, immutable" } },
     { "src": "/(.*)", "dest": "/index.html" }
   ]
 }

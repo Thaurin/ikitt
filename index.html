@@ -87,6 +87,7 @@
       top: 0 !important;
       width: 320px !important;
       height: 480px !important;
+      z-index: 50;
     }
 
     #voicebox-img {
@@ -1033,6 +1034,7 @@
 
     const portraitEl = document.getElementById('portrait');
     const landscapeEl = document.getElementById('landscape');
+    let introStarted = false;
 
     function applyScale() {
       const vw = window.innerWidth;
@@ -1048,6 +1050,11 @@
         portraitEl.style.setProperty('--scene-scale', scale);
         portraitEl.classList.add('active');
         landscapeEl.classList.remove('active');
+        // If intro hasn't run yet (app started in landscape), run it now
+        if (!introStarted) {
+          introStarted = true;
+          setTimeout(runIntroStep, 400);
+        }
       } else {
         // Landscape viewport → scale 480×320 canvas
         const scale = Math.min(vw / 480, vh / 320);
@@ -1110,7 +1117,6 @@
         currentAudioEl = null;
       }
       voiceboxImg.src = voiceboxFrames[0];
-      resetButtons();
     }
 
     async function playSample(filename, withMetering, onEnd) {
@@ -1179,7 +1185,7 @@
 
     function resetButtons() {
       document.querySelectorAll('.side-btn-img').forEach(el => {
-        el.style.display = '';
+        el.style.display = 'block';
         el.style.opacity = '1';
       });
     }
@@ -1191,8 +1197,14 @@
         // If same sample is already playing → stop
         if (currentAudioEl && !currentAudioEl.paused && lastPage === selectedPage && lastTag === tag) {
           stopCurrentSound();
+          resetButtons();
           return;
         }
+
+        // Reset all buttons to lit, then dim only the pressed one
+        resetButtons();
+        const imgEl = document.getElementById(tagToImgId[tag]);
+        if (imgEl) imgEl.style.display = 'none';
 
         lastPage = selectedPage;
         lastTag = tag;
@@ -1230,12 +1242,19 @@
        ══════════════════════════════════════════════════════════════════════════ */
 
     let voiceboxTapTimer = null;
+    let voiceboxLastTapTime = 0;
     const voiceboxWrap = document.getElementById('voicebox-wrap');
     let voiceboxZoomed = false;
 
-    voiceboxWrap.addEventListener('click', (e) => {
+    // Core tap handler: mirrors ObjC touchesBegan tapCount logic.
+    // If a previous tap timer is pending → double-tap → cancel and zoom.
+    // Otherwise → schedule playRandom after 400ms (matching ObjC 0.4s delay).
+    function handleVoiceboxTap() {
+      const now = Date.now();
+      if (now - voiceboxLastTapTime < 50) return; // debounce touchend→click
+      voiceboxLastTapTime = now;
+
       if (voiceboxTapTimer) {
-        // Double-tap detected
         clearTimeout(voiceboxTapTimer);
         voiceboxTapTimer = null;
         zoomKitt();
@@ -1243,9 +1262,20 @@
         voiceboxTapTimer = setTimeout(() => {
           voiceboxTapTimer = null;
           playRandom();
-        }, 300);
+        }, 400);
+      }
+    }
+
+    // Use touchend for iOS (fires immediately, no click-synthesis delay)
+    voiceboxWrap.addEventListener('touchend', (e) => {
+      if (e.changedTouches.length === 1) {
+        e.preventDefault(); // prevent subsequent click event
+        handleVoiceboxTap();
       }
     });
+
+    // Click fallback for desktop (mouse, no touch events)
+    voiceboxWrap.addEventListener('click', handleVoiceboxTap);
 
     function playRandom() {
       let page, tag;
@@ -1255,6 +1285,8 @@
         tag = Math.ceil(Math.random() * 8);
       } while (page === lastPage && tag === lastTag);
 
+      // Reset all buttons to lit, then dim the random one
+      resetButtons();
       const imgEl = document.getElementById(tagToImgId[tag]);
       if (imgEl) imgEl.style.display = 'none';
 
@@ -1400,8 +1432,7 @@
       }
     }
 
-    // Kick off intro after a short settle delay
-    setTimeout(runIntroStep, 400);
+    // Intro is triggered by applyScale() when portrait is first shown
 
     /* ═══════════════════════════════════════════════════════════════════════════
        LANDSCAPE / DASHBOARD
@@ -1602,6 +1633,7 @@
 
     function openSettings() {
       stopCurrentSound();
+      resetButtons();
       refreshSettingsUI();
       flipper.classList.add('flipped');
     }

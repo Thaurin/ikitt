@@ -1,5 +1,7 @@
-const CACHE = 'ikitt-v1';
+const CACHE = 'ikitt-v2';
+const AUDIO_CACHE = 'ikitt-audio-v2';
 
+// Essential assets cached on install (excludes large audio files)
 const ASSETS = [
   './',
   './index.html',
@@ -33,35 +35,6 @@ const ASSETS = [
   './mph.png',
   './grayButton.png',
   './blueButton.png',
-  './startup.wav',
-  './turboboost.wav',
-  './beep1.wav',
-  './beep2.wav',
-  './beep3.wav',
-  './kitt1-1.wav',
-  './kitt1-2.wav',
-  './kitt1-3.wav',
-  './kitt1-4.wav',
-  './kitt1-5.wav',
-  './kitt1-6.wav',
-  './kitt1-7.wav',
-  './kitt1-8.wav',
-  './kitt2-1.wav',
-  './kitt2-2.wav',
-  './kitt2-3.wav',
-  './kitt2-4.wav',
-  './kitt2-5.wav',
-  './kitt2-6.wav',
-  './kitt2-7.wav',
-  './kitt2-8.wav',
-  './kitt3-1.wav',
-  './kitt3-2.wav',
-  './kitt3-3.wav',
-  './kitt3-4.wav',
-  './kitt3-5.wav',
-  './kitt3-6.wav',
-  './kitt3-7.wav',
-  './kitt3-8.wav',
 ];
 
 self.addEventListener('install', event => {
@@ -75,14 +48,41 @@ self.addEventListener('activate', event => {
   // Remove old cache versions
   event.waitUntil(
     caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
+      Promise.all(keys.filter(k => k !== CACHE && k !== AUDIO_CACHE).map(k => caches.delete(k)))
     )
   );
   self.clients.claim();
 });
 
 self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request).then(cached => cached || fetch(event.request))
-  );
+  const url = new URL(event.request.url);
+  
+  // Audio files: network-first with 3s timeout, fall back to cache
+  if (url.pathname.endsWith('.wav')) {
+    event.respondWith(
+      Promise.race([
+        fetch(event.request),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 3000))
+      ])
+        .then(response => {
+          // Cache successful network response
+          if (response.ok) {
+            const cacheCopy = response.clone();
+            caches.open(AUDIO_CACHE).then(cache => cache.put(event.request, cacheCopy));
+          }
+          return response;
+        })
+        .catch(() => {
+          // Fall back to cache on network failure or timeout
+          return caches.match(event.request).then(cached => 
+            cached || fetch(event.request).catch(() => null)
+          );
+        })
+    );
+  } else {
+    // Non-audio files: cache-first (images, HTML, etc.)
+    event.respondWith(
+      caches.match(event.request).then(cached => cached || fetch(event.request))
+    );
+  }
 });
