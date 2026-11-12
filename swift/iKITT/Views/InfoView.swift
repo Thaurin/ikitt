@@ -5,22 +5,10 @@ struct InfoView: View {
     let onDismiss: () -> Void
     @Environment(\.openURL) private var openURL
 
-    private var version: String {
-        Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.2"
-    }
-
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 22) {
-                    Text("iKITT")
-                        .font(.system(size: 34, weight: .bold, design: .serif))
-                        .foregroundStyle(Color.white)
-
-                    Text("Version \(version)")
-                        .font(.footnote)
-                        .foregroundStyle(Color.secondary)
-
                     Text("A shadowy flight into the world of a man who does not exist...")
                         .font(.body)
 
@@ -37,8 +25,7 @@ struct InfoView: View {
                             Tap the buttons on the left and right side to make KITT speak! \
                             Select one of the three buttons in the middle to select a page. \
                             Single tap on the voice box to play a random sound. Double tap \
-                            the voice box to zoom it in or out. Shake for Turbo Boost! Use \
-                            the gear in the lower-left corner for settings.
+                            the voice box to zoom it in or out. Shake for Turbo Boost!
                             """
                         )
 

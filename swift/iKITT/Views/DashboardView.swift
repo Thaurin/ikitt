@@ -221,10 +221,6 @@ struct DashboardView: View {
                         .interpolation(.high)
                         .scaledToFit()
                         .frame(height: 36)
-
-                    Text("Double-tap to close")
-                        .font(.footnote)
-                        .foregroundStyle(Color.white.opacity(0.45))
                 }
                 .padding()
             }

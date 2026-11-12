@@ -19,7 +19,7 @@ struct KittView: View {
             VoiceboxZoomLayer(model: model, namespace: voiceboxNamespace)
                 .zIndex(20)
         }
-        .animation(.easeInOut(duration: 0.35), value: model.voiceboxZoomed)
+        .animation(.easeInOut(duration: 0.30), value: model.voiceboxZoomed)
         .sensoryFeedback(.selection, trigger: model.selectedPage)
     }
 
@@ -205,18 +205,6 @@ private struct VoiceboxZoomLayer: View {
                         isSource: model.voiceboxZoomed
                     )
 
-                if model.voiceboxZoomed {
-                    VStack {
-                        Spacer()
-                        Text("Tap for a random sample. Double-tap to close.")
-                            .font(.footnote)
-                            .multilineTextAlignment(.center)
-                            .foregroundStyle(Color.white.opacity(0.55))
-                            .shadow(color: .black.opacity(0.8), radius: 4, y: 1)
-                            .padding(.bottom, 36)
-                    }
-                    .transition(.opacity)
-                }
             }
             .frame(width: proxy.size.width, height: proxy.size.height)
             .contentShape(Rectangle())
