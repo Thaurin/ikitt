@@ -207,22 +207,32 @@ private struct VoiceboxZoomView: View {
 
                 VStack {
                     Spacer()
-                    Text("Double-tap to close")
+                    Text("Tap for a random sample. Double-tap to close.")
                         .font(.footnote)
+                        .multilineTextAlignment(.center)
                         .foregroundStyle(Color.white.opacity(0.5))
                         .padding(.bottom, 36)
                 }
             }
             .contentShape(Rectangle())
-            .onTapGesture(count: 2) {
-                model.toggleVoiceboxZoom()
-            }
+            .gesture(
+                TapGesture(count: 2)
+                    .onEnded { _ in model.toggleVoiceboxZoom() }
+                    .exclusively(
+                        before: TapGesture()
+                            .onEnded { _ in model.playRandom() }
+                    )
+            )
         }
         .ignoresSafeArea()
         .background(Color.black)
         .accessibilityElement()
         .accessibilityLabel("Zoomed KITT voicebox")
+        .accessibilityHint("Tap to play a random sample. Double-tap to zoom out.")
         .accessibilityAction {
+            model.playRandom()
+        }
+        .accessibilityAction(named: "Zoom out") {
             model.toggleVoiceboxZoom()
         }
     }
