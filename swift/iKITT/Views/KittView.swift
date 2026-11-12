@@ -206,24 +206,16 @@ private struct VoiceboxZoomView: View {
                     .clipped()
             }
             .contentShape(Rectangle())
-            .gesture(
-                TapGesture(count: 2)
-                    .onEnded { _ in model.toggleVoiceboxZoom() }
-                    .exclusively(
-                        before: TapGesture()
-                            .onEnded { _ in model.playRandom() }
-                    )
-            )
+            .onTapGesture(count: 2) {
+                model.toggleVoiceboxZoom()
+            }
         }
         .ignoresSafeArea()
         .background(Color.black)
         .accessibilityElement()
         .accessibilityLabel("Zoomed KITT voicebox")
-        .accessibilityHint("Tap to play a random sample. Double-tap to zoom out.")
+        .accessibilityHint("Double-tap to zoom out.")
         .accessibilityAction {
-            model.playRandom()
-        }
-        .accessibilityAction(named: "Zoom out") {
             model.toggleVoiceboxZoom()
         }
     }
