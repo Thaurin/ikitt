@@ -3,7 +3,7 @@ import Observation
 
 @MainActor
 @Observable
-final class AudioService: NSObject, @preconcurrency AVAudioPlayerDelegate {
+final class AudioService: NSObject, AVAudioPlayerDelegate {
     @ObservationIgnored private var player: AVAudioPlayer?
     @ObservationIgnored private var meterTask: Task<Void, Never>?
     @ObservationIgnored private var completion: (@MainActor () -> Void)?

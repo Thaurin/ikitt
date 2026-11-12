@@ -209,13 +209,14 @@ final class AppModel {
             }
 
             startupTask = Task { @MainActor [weak self] in
+                guard let self else { return }
                 try? await Task.sleep(for: .milliseconds(180))
-                guard !Task.isCancelled, let self else { return }
+                guard !Task.isCancelled else { return }
                 self.audio.play(resource: SoundEffect.beep2.rawValue, metering: false) { [weak self] in
                     self?.playbackFinished()
                 }
                 try? await Task.sleep(for: .milliseconds(180))
-                guard !Task.isCancelled, let self else { return }
+                guard !Task.isCancelled else { return }
                 self.audio.play(resource: SoundEffect.beep3.rawValue, metering: false) { [weak self] in
                     self?.playbackFinished()
                 }
