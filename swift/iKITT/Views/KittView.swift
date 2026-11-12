@@ -3,7 +3,6 @@ import SwiftUI
 struct KittView: View {
     let model: AppModel
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @Namespace private var voiceboxNamespace
 
     var body: some View {
         ZStack {
@@ -15,11 +14,19 @@ struct KittView: View {
                 .padding(.horizontal, 8)
                 bottomBar
             }
-
-            VoiceboxZoomLayer(model: model, namespace: voiceboxNamespace)
-                .zIndex(20)
         }
-        .animation(.easeInOut(duration: 0.30), value: model.voiceboxZoomed)
+        .overlayPreferenceValue(VoiceboxFramePreferenceKey.self) { anchor in
+            GeometryReader { proxy in
+                if let anchor {
+                    VoiceboxZoomLayer(
+                        model: model,
+                        smallRect: proxy[anchor],
+                        fullSize: proxy.size
+                    )
+                }
+            }
+            .ignoresSafeArea()
+        }
         .sensoryFeedback(.selection, trigger: model.selectedPage)
     }
 
@@ -136,12 +143,7 @@ struct KittView: View {
                     x: PortraitLayout.voiceboxRect.midX,
                     y: PortraitLayout.voiceboxRect.midY
                 )
-                .matchedGeometryEffect(
-                    id: "voicebox",
-                    in: voiceboxNamespace,
-                    isSource: !model.voiceboxZoomed
-                )
-                .allowsHitTesting(!model.voiceboxZoomed)
+                .anchorPreference(key: VoiceboxFramePreferenceKey.self, value: .bounds) { $0 }
         }
         .frame(
             width: PortraitLayout.canvasSize.width,
@@ -156,26 +158,6 @@ struct KittView: View {
 
     private var voiceboxAnchor: some View {
         Color.clear
-            .contentShape(Rectangle())
-            .gesture(
-                TapGesture(count: 2)
-                    .onEnded { _ in model.toggleVoiceboxZoom() }
-                    .exclusively(
-                        before: TapGesture()
-                            .onEnded { _ in model.playRandom() }
-                    )
-            )
-            .accessibilityElement()
-            .accessibilityLabel("KITT voicebox")
-            .accessibilityHint("Tap to play a random sample. Double-tap to zoom.")
-            .accessibilityAddTraits(.isButton)
-            .accessibilityAction {
-                model.playRandom()
-            }
-            .accessibilityAction(named: "Zoom") {
-                model.toggleVoiceboxZoom()
-            }
-            .accessibilityHidden(model.voiceboxZoomed)
     }
 
     private func isButtonImageVisible(_ button: SideButtonLayout) -> Bool {
@@ -188,25 +170,31 @@ struct KittView: View {
     }
 }
 
+private struct VoiceboxFramePreferenceKey: PreferenceKey {
+    nonisolated(unsafe) static var defaultValue: Anchor<CGRect>? = nil
+
+    static func reduce(value: inout Anchor<CGRect>?, nextValue: () -> Anchor<CGRect>?) {
+        value = nextValue() ?? value
+    }
+}
+
 private struct VoiceboxZoomLayer: View {
     let model: AppModel
-    let namespace: Namespace.ID
+    let smallRect: CGRect
+    let fullSize: CGSize
 
     var body: some View {
-        GeometryReader { proxy in
-            ZStack {
-                Image("voicebox\(model.audio.voiceboxFrameIndex)")
-                    .resizable()
-                    .interpolation(.high)
-                    .frame(width: proxy.size.width, height: proxy.size.height)
-                    .matchedGeometryEffect(
-                        id: "voicebox",
-                        in: namespace,
-                        isSource: model.voiceboxZoomed
-                    )
-
-            }
-            .frame(width: proxy.size.width, height: proxy.size.height)
+        Image("voicebox\(model.audio.voiceboxFrameIndex)")
+            .resizable()
+            .interpolation(.high)
+            .frame(
+                width: model.voiceboxZoomed ? fullSize.width : smallRect.width,
+                height: model.voiceboxZoomed ? fullSize.height : smallRect.height
+            )
+            .position(
+                x: model.voiceboxZoomed ? fullSize.width / 2 : smallRect.midX,
+                y: model.voiceboxZoomed ? fullSize.height / 2 : smallRect.midY
+            )
             .contentShape(Rectangle())
             .gesture(
                 TapGesture(count: 2)
@@ -216,18 +204,24 @@ private struct VoiceboxZoomLayer: View {
                             .onEnded { _ in model.playRandom() }
                     )
             )
-            .allowsHitTesting(model.voiceboxZoomed)
-        }
-        .ignoresSafeArea()
-        .accessibilityElement()
-        .accessibilityLabel("Zoomed KITT voicebox")
-        .accessibilityHint("Tap to play a random sample. Double-tap to zoom out.")
-        .accessibilityAction {
-            model.playRandom()
-        }
-        .accessibilityAction(named: "Zoom out") {
-            model.toggleVoiceboxZoom()
-        }
-        .accessibilityHidden(!model.voiceboxZoomed)
+            .animation(.easeInOut(duration: 0.30), value: model.voiceboxZoomed)
+            .accessibilityElement()
+            .accessibilityLabel(
+                Text(model.voiceboxZoomed ? "Zoomed KITT voicebox" : "KITT voicebox")
+            )
+            .accessibilityHint(
+                Text(
+                    model.voiceboxZoomed
+                        ? "Tap to play a random sample. Double-tap to zoom out."
+                        : "Tap to play a random sample. Double-tap to zoom."
+                )
+            )
+            .accessibilityAddTraits(.isButton)
+            .accessibilityAction {
+                model.playRandom()
+            }
+            .accessibilityAction(named: Text(model.voiceboxZoomed ? "Zoom out" : "Zoom")) {
+                model.toggleVoiceboxZoom()
+            }
     }
 }
