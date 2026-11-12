@@ -6,25 +6,23 @@ struct KittView: View {
 
     var body: some View {
         ZStack {
-            VStack(spacing: 0) {
-                logoBar
-                ScaledCanvas(designSize: PortraitLayout.canvasSize.cgSize) {
-                    console
+            if model.voiceboxZoomed {
+                VoiceboxZoomView(model: model)
+                    .transition(.opacity.combined(with: .scale(scale: 0.96)))
+                    .zIndex(20)
+            } else {
+                VStack(spacing: 0) {
+                    logoBar
+                    ScaledCanvas(designSize: PortraitLayout.canvasSize.cgSize) {
+                        console
+                    }
+                    .padding(.horizontal, 8)
+                    bottomBar
                 }
-                .padding(.horizontal, 8)
-                bottomBar
+                .transition(.opacity)
             }
         }
-        .overlayPreferenceValue(VoiceboxRectPreferenceKey.self) { rect in
-            GeometryReader { proxy in
-                VoiceboxZoomLayer(
-                    model: model,
-                    smallRect: rect,
-                    fullSize: proxy.size
-                )
-            }
-            .ignoresSafeArea()
-        }
+        .animation(.easeInOut(duration: 0.30), value: model.voiceboxZoomed)
         .sensoryFeedback(.selection, trigger: model.selectedPage)
     }
 
@@ -133,13 +131,9 @@ struct KittView: View {
             }
 
             voicebox
-                .background(
-                    GeometryReader { geometry in
-                        Color.clear.preference(
-                            key: VoiceboxRectPreferenceKey.self,
-                            value: geometry.frame(in: .global)
-                        )
-                    }
+                .frame(
+                    width: PortraitLayout.voiceboxRect.width,
+                    height: PortraitLayout.voiceboxRect.height
                 )
                 .position(
                     x: PortraitLayout.voiceboxRect.midX,
@@ -184,8 +178,6 @@ struct KittView: View {
             .accessibilityAction(named: "Zoom") {
                 model.toggleVoiceboxZoom()
             }
-            .allowsHitTesting(!model.voiceboxZoomed)
-            .accessibilityHidden(model.voiceboxZoomed)
     }
 
     private func isButtonImageVisible(_ button: SideButtonLayout) -> Bool {
@@ -198,29 +190,21 @@ struct KittView: View {
     }
 }
 
-private struct VoiceboxRectPreferenceKey: PreferenceKey {
-    nonisolated(unsafe) static var defaultValue: CGRect = .zero
-
-    static func reduce(value: inout CGRect, nextValue: () -> CGRect) {
-        value = nextValue()
-    }
-}
-
-private struct VoiceboxZoomLayer: View {
+private struct VoiceboxZoomView: View {
     let model: AppModel
-    let smallRect: CGRect
-    let fullSize: CGSize
 
     var body: some View {
-        Image("voicebox\(model.audio.voiceboxFrameIndex)")
-            .resizable()
-            .interpolation(.high)
-            .scaledToFill()
-            .frame(
-                width: model.voiceboxZoomed ? fullSize.width : smallRect.width,
-                height: model.voiceboxZoomed ? fullSize.height : smallRect.height
-            )
-            .clipped()
+        GeometryReader { proxy in
+            ZStack {
+                Color.black
+
+                Image("voicebox\(model.audio.voiceboxFrameIndex)")
+                    .resizable()
+                    .interpolation(.high)
+                    .scaledToFill()
+                    .frame(width: proxy.size.width, height: proxy.size.height)
+                    .clipped()
+            }
             .contentShape(Rectangle())
             .gesture(
                 TapGesture(count: 2)
@@ -230,31 +214,17 @@ private struct VoiceboxZoomLayer: View {
                             .onEnded { _ in model.playRandom() }
                     )
             )
-            .accessibilityElement()
-            .accessibilityLabel(
-                Text(model.voiceboxZoomed ? "Zoomed KITT voicebox" : "KITT voicebox")
-            )
-            .accessibilityHint(
-                Text(
-                    model.voiceboxZoomed
-                        ? "Tap to play a random sample. Double-tap to zoom out."
-                        : "Tap to play a random sample. Double-tap to zoom."
-                )
-            )
-            .accessibilityAddTraits(.isButton)
-            .accessibilityAction {
-                model.playRandom()
-            }
-            .accessibilityAction(named: Text(model.voiceboxZoomed ? "Zoom out" : "Zoom")) {
-                model.toggleVoiceboxZoom()
-            }
-            .position(
-                x: model.voiceboxZoomed ? fullSize.width / 2 : smallRect.midX,
-                y: model.voiceboxZoomed ? fullSize.height / 2 : smallRect.midY
-            )
-            .opacity(model.voiceboxZoomed ? 1 : 0)
-            .allowsHitTesting(model.voiceboxZoomed)
-            .accessibilityHidden(!model.voiceboxZoomed)
-            .animation(.easeInOut(duration: 0.30), value: model.voiceboxZoomed)
+        }
+        .ignoresSafeArea()
+        .background(Color.black)
+        .accessibilityElement()
+        .accessibilityLabel("Zoomed KITT voicebox")
+        .accessibilityHint("Tap to play a random sample. Double-tap to zoom out.")
+        .accessibilityAction {
+            model.playRandom()
+        }
+        .accessibilityAction(named: "Zoom out") {
+            model.toggleVoiceboxZoom()
+        }
     }
 }
