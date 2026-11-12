@@ -1,0 +1,197 @@
+# Manual only. Nothing runs on push, so macOS minutes are spent only when you start
+# a run from the Actions tab (or `gh workflow run ios.yml`).
+#
+# This workflow lives in the root repository. GitLab remains the authoritative
+# remote; the GitHub repository is only the CI mirror. The old Objective-C app and
+# the PWA do not participate: the job builds swift/iKITT.xcodeproj.
+#
+# iKITT keeps its Xcode project checked in, so unlike the Data Gate workflow there
+# is no XcodeGen step. The unit tests run locally with `swift test`; this job proves
+# the iOS app builds and packages.
+#
+# Uses the same xcode-27 runner label as the other iOS tools. Change the label if
+# this repository uses a different macOS runner.
+name: iOS IPA (manual)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ios-ipa-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build unsigned IPA
+    runs-on: xcode-27
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Show Xcode and SDK versions
+        run: |
+          set -Eeuo pipefail
+          xcode-select -p
+          xcodebuild -version
+          sdk=$(xcrun --sdk iphoneos --show-sdk-version)
+          echo "iphoneos SDK: $sdk"
+          case "$sdk" in
+            27.*) ;;
+            *) echo "::error::iOS 27 SDK required, found $sdk"; exit 1 ;;
+          esac
+
+      - name: Build (unsigned)
+        run: |
+          set -Eeuo pipefail
+          xcodebuild \
+            -project swift/iKITT.xcodeproj \
+            -scheme iKITT \
+            -configuration Release \
+            -sdk iphoneos \
+            -destination 'generic/platform=iOS' \
+            -derivedDataPath "$RUNNER_TEMP/iKITTBuild" \
+            -showBuildTimingSummary \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            build
+
+      - name: Verify built app
+        run: |
+          set -Eeuo pipefail
+
+          APP="$RUNNER_TEMP/iKITTBuild/Build/Products/Release-iphoneos/iKITT.app"
+          PLIST="$APP/Info.plist"
+
+          fail() {
+            echo "::error::$*"
+            exit 1
+          }
+
+          test -d "$APP" || fail "App bundle not found at $APP"
+          test -x "$APP/iKITT" || fail "App executable not found in $APP"
+          test -f "$PLIST" || fail "Info.plist not found in $APP"
+          test -f "$APP/Assets.car" || fail "Assets.car missing from $APP"
+          test -f "$APP/PrivacyInfo.xcprivacy" || fail "PrivacyInfo.xcprivacy missing from $APP"
+
+          check_raw() {
+            local key="$1"
+            local expected="$2"
+            local value
+            value=$(plutil -extract "$key" raw -o - "$PLIST" 2>/dev/null || echo missing)
+            if [[ "$value" != "$expected" ]]; then
+              echo "::error::$key is '$value', expected '$expected'"
+              plutil -p "$PLIST"
+              exit 1
+            fi
+            echo "$key = $value"
+          }
+
+          check_raw CFBundleIdentifier com.mentation.ikitt
+          check_raw CFBundleShortVersionString 1.2
+          check_raw CFBundleVersion 1
+          check_raw UIUserInterfaceStyle Dark
+          check_raw UIStatusBarHidden true
+          check_raw UIViewControllerBasedStatusBarAppearance false
+
+          minimum_os=$(plutil -extract MinimumOSVersion raw -o - "$PLIST" 2>/dev/null || echo missing)
+          case "$minimum_os" in
+            27.*) echo "MinimumOSVersion = $minimum_os" ;;
+            *) fail "MinimumOSVersion is '$minimum_os', expected 27.x" ;;
+          esac
+
+          plutil -extract UILaunchScreen xml1 -o - "$PLIST" >/dev/null \
+            || fail "UILaunchScreen is missing from the built Info.plist"
+
+          for key in NSLocationWhenInUseUsageDescription NSMotionUsageDescription; do
+            value=$(plutil -extract "$key" raw -o - "$PLIST" 2>/dev/null || true)
+            [[ -n "$value" ]] || fail "$key is missing or empty in the built Info.plist"
+            echo "$key is present"
+          done
+
+          orientations=$(plutil -extract UISupportedInterfaceOrientations json -o - "$PLIST" 2>/dev/null || true)
+          for orientation in \
+            UIInterfaceOrientationPortrait \
+            UIInterfaceOrientationLandscapeLeft \
+            UIInterfaceOrientationLandscapeRight; do
+            if ! grep -q "\"$orientation\"" <<< "$orientations"; then
+              fail "$orientation is missing from UISupportedInterfaceOrientations"
+            fi
+          done
+          echo "Supported orientations are present"
+
+          archs=$(lipo -archs "$APP/iKITT")
+          case "$archs" in
+            *arm64*) echo "Executable architectures: $archs" ;;
+            *) fail "Built executable is not arm64: $archs" ;;
+          esac
+
+          if ! grep -q "NSPrivacyAccessedAPICategoryUserDefaults" "$APP/PrivacyInfo.xcprivacy"; then
+            fail "UserDefaults privacy declaration is missing"
+          fi
+          if ! grep -q "CA92.1" "$APP/PrivacyInfo.xcprivacy"; then
+            fail "UserDefaults privacy reason CA92.1 is missing"
+          fi
+
+          wav_count=$(find "$APP" -type f -name '*.wav' | wc -l | tr -d ' ')
+          [[ "$wav_count" -eq 29 ]] || fail "Expected 29 WAV files in the app, found $wav_count"
+          echo "Found $wav_count WAV files"
+
+          for name in startup.wav turboboost.wav kitt1-1.wav kitt3-8.wav beep1.wav; do
+            found=$(find "$APP" -type f -name "$name" -print)
+            [[ -n "$found" ]] || fail "Missing audio resource $name"
+          done
+          echo "Audio resources are present"
+
+      - name: Package unsigned IPA
+        run: |
+          set -Eeuo pipefail
+
+          APP="$RUNNER_TEMP/iKITTBuild/Build/Products/Release-iphoneos/iKITT.app"
+          IPA="iKITT-unsigned.ipa"
+
+          TEMP_DIR=$(mktemp -d "$RUNNER_TEMP/ipa.XXXXXX")
+          trap 'rm -rf "$TEMP_DIR"' EXIT
+
+          test -d "$APP" || {
+            echo "::error::App bundle not found: $APP"
+            exit 1
+          }
+
+          mkdir "$TEMP_DIR/Payload"
+          ditto "$APP" "$TEMP_DIR/Payload/iKITT.app"
+
+          ditto -c -k --sequesterRsrc --keepParent \
+            "$TEMP_DIR/Payload" "$IPA"
+
+          unzip -tq "$IPA" >/dev/null
+
+          unzip -Z1 "$IPA" > "$TEMP_DIR/archive-list.txt"
+
+          if ! grep -Fxq 'Payload/iKITT.app/Info.plist' "$TEMP_DIR/archive-list.txt"; then
+            echo "::error::IPA does not contain Payload/iKITT.app/Info.plist"
+            exit 1
+          fi
+
+          if ! grep -Fxq 'Payload/iKITT.app/PrivacyInfo.xcprivacy' "$TEMP_DIR/archive-list.txt"; then
+            echo "::error::IPA does not contain Payload/iKITT.app/PrivacyInfo.xcprivacy"
+            exit 1
+          fi
+
+          ls -lh "$IPA"
+
+      - name: Upload IPA
+        uses: actions/upload-artifact@v7
+        with:
+          name: iKITT-unsigned-ipa
+          path: iKITT-unsigned.ipa
+          archive: true
+          compression-level: 0
+          retention-days: 7
+          if-no-files-found: error

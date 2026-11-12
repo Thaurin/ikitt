@@ -22,6 +22,35 @@ Location and motion usage descriptions are generated from build settings. Status
 indicator are hidden while the console is active. The idle timer is disabled only on the
 landscape dashboard.
 
+### Manual GitHub Actions IPA
+
+GitLab remains the authoritative remote (`origin`). The GitHub repository is the CI mirror,
+and the workflow is in the root repository at `.github/workflows/ios.yml`. It is
+`workflow_dispatch` only and builds just `swift/iKITT.xcodeproj`; the old Objective-C project
+and the PWA do not participate. It builds an unsigned Release app for `iphoneos` on the
+`xcode-27` runner, checks the built app bundle, and uploads `iKITT-unsigned-ipa` for 7 days.
+Change the runner label there if this repository uses a different macOS runner.
+
+Add the GitHub remote when ready, and push the branch you want CI to build:
+
+```sh
+git remote add github git@github.com:OWNER/iKITT.git
+git push github master
+```
+
+Trigger the workflow from the GitHub Actions tab, or run this from the `swift/` directory to
+trigger, wait, and download the IPA:
+
+```sh
+./build-ipa.sh
+```
+
+The helper uses the `github` remote by default; set `GITHUB_REMOTE=...` if your remote has a
+different name. It triggers GitHub's default branch unless you pass extra `gh workflow run`
+options such as `--ref BRANCH`, and it never pushes to either remote. The IPA is unsigned; sign
+it with your usual tool before installing. Unit tests are not run in CI; use `swift test`
+locally.
+
 ## Verify the shared logic
 
 The small Foundation-only model layer can be built and tested without Xcode:
