@@ -98,7 +98,9 @@ jobs:
           check_raw CFBundleVersion 1
           check_raw UIUserInterfaceStyle Dark
           check_raw UIStatusBarHidden true
-          check_raw UIViewControllerBasedStatusBarAppearance false
+          # Xcode 27 omits UIViewControllerBasedStatusBarAppearance from the
+          # SwiftUI app's Info.plist. UIStatusBarHidden and SwiftUI's
+          # statusBarHidden still hide the bar, so do not require the key here.
 
           minimum_os=$(plutil -extract MinimumOSVersion raw -o - "$PLIST" 2>/dev/null || echo missing)
           case "$minimum_os" in
