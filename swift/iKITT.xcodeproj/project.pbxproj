@@ -1,0 +1,496 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		22EEE07320C07D2B9CACCD7E /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E49C8D218D99CF2F8C959E /* AppModel.swift */; };
+		8E067E3E8C43EA1B1AC931BD /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B85961BEB1C6EA1AD2B0B01 /* AppSettings.swift */; };
+		B252AC3167331DA4BF57706C /* DashboardLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2A7072F345A77CCB9DF2C7 /* DashboardLayout.swift */; };
+		1F2D27CEAAE4A23FAD3ACCCA /* DashboardMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF633245898E029E652A0311 /* DashboardMath.swift */; };
+		DA13EE1C152553974963A9F4 /* SampleCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F9F16AD4FADB5D3E9C6A133 /* SampleCatalog.swift */; };
+		2599FD86D5295D347C1784CA /* SettingsOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B10B5EE8D0BCC206BFD26D7 /* SettingsOptions.swift */; };
+		F9C00114800E7889CDA90F2E /* SettingsValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC91EEDADB728C28EDE76799 /* SettingsValues.swift */; };
+		4DA02A2EE55CD94DA8D1825D /* ShuffleSchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F4A25BF01BE71E8D127EBB /* ShuffleSchedule.swift */; };
+		5637831A6F299E7AEF6D88B4 /* AudioService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66FF9266E0CD693E042430F /* AudioService.swift */; };
+		B3405F3ABDD401CB684DF324 /* ClickPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAC6272093245E3D43CAC2F /* ClickPlayer.swift */; };
+		9E1C3CF6F98C1A6E7542800B /* DashboardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B5252027A65084404305E65 /* DashboardModel.swift */; };
+		EB0CE36398E3FF41C52C5C0B /* MotionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEB9F9BBF3654ECC98A257E4 /* MotionService.swift */; };
+		CF86BCC501FAE1D1BC63E9AE /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043E58AAB5FD23E56BDC0475 /* Components.swift */; };
+		F6BFF634A69B3E3ABDBEBAFE /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F23C4A22FF97F2AF93869C34 /* DashboardView.swift */; };
+		87511627AAB7E958D36ADF5C /* FlipContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7466CA8E35DC72581CF76B4D /* FlipContainer.swift */; };
+		559592FEF269733A2F390551 /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C758A68DEC2753A81F4486 /* InfoView.swift */; };
+		2BBB507D94BEF56DF2E8E0D9 /* KittView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8209B82D5D310C40E7866A6B /* KittView.swift */; };
+		9057BA77E039279BBF946CE7 /* LayoutConversions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B7E6A14AB81C764329AD41 /* LayoutConversions.swift */; };
+		AA06B9E4CFC40CCF2E5B0958 /* LedMeterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4CD1EFCCFBBE26D4F194E4 /* LedMeterView.swift */; };
+		A0A398DC658DDB95D801F794 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48036DA948583004087BA72C /* RootView.swift */; };
+		56C992A2B974A9B80455E8EF /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0672020E8B90DBDEAFA06B8 /* SettingsView.swift */; };
+		D5659BCF2F31DB50A8680355 /* iKITTApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 403FC969DDFD2FAFDEA36CE8 /* iKITTApp.swift */; };
+		57F13D7CC50412DDEF506349 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1B16CBC77561EFBA3E54B5E3 /* Assets.xcassets */; };
+		32EB0B881B0AE1E30EB2B0A0 /* Audio in Resources */ = {isa = PBXBuildFile; fileRef = 10B308056614071E904BECD5 /* Audio */; };
+		6F5B3684AC6CDA946581D253 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 71F5A27852FA23BD3EDDAC13 /* PrivacyInfo.xcprivacy */; };
+		7CA7C2AE8BA9C0C0B11A8BB2 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6F2FF437464A7B9F342F7E3 /* AVFoundation.framework */; };
+		30D59737CEB76B5E722937DE /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E2A38F47AD0FAC535548450 /* CoreLocation.framework */; };
+		DFDCF92847C4DE29F122AEC3 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B114D72788B7770C332DBDE /* CoreMotion.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		24548999D16606BC3E6866CF /* iKITT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iKITT.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A9E49C8D218D99CF2F8C959E /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
+		9B85961BEB1C6EA1AD2B0B01 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		9E2A7072F345A77CCB9DF2C7 /* DashboardLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardLayout.swift; sourceTree = "<group>"; };
+		CF633245898E029E652A0311 /* DashboardMath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardMath.swift; sourceTree = "<group>"; };
+		7F9F16AD4FADB5D3E9C6A133 /* SampleCatalog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleCatalog.swift; sourceTree = "<group>"; };
+		3B10B5EE8D0BCC206BFD26D7 /* SettingsOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsOptions.swift; sourceTree = "<group>"; };
+		DC91EEDADB728C28EDE76799 /* SettingsValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsValues.swift; sourceTree = "<group>"; };
+		95F4A25BF01BE71E8D127EBB /* ShuffleSchedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShuffleSchedule.swift; sourceTree = "<group>"; };
+		A66FF9266E0CD693E042430F /* AudioService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioService.swift; sourceTree = "<group>"; };
+		DAAC6272093245E3D43CAC2F /* ClickPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClickPlayer.swift; sourceTree = "<group>"; };
+		0B5252027A65084404305E65 /* DashboardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardModel.swift; sourceTree = "<group>"; };
+		FEB9F9BBF3654ECC98A257E4 /* MotionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionService.swift; sourceTree = "<group>"; };
+		043E58AAB5FD23E56BDC0475 /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
+		F23C4A22FF97F2AF93869C34 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		7466CA8E35DC72581CF76B4D /* FlipContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlipContainer.swift; sourceTree = "<group>"; };
+		96C758A68DEC2753A81F4486 /* InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; };
+		8209B82D5D310C40E7866A6B /* KittView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KittView.swift; sourceTree = "<group>"; };
+		57B7E6A14AB81C764329AD41 /* LayoutConversions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutConversions.swift; sourceTree = "<group>"; };
+		4E4CD1EFCCFBBE26D4F194E4 /* LedMeterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedMeterView.swift; sourceTree = "<group>"; };
+		48036DA948583004087BA72C /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		B0672020E8B90DBDEAFA06B8 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		403FC969DDFD2FAFDEA36CE8 /* iKITTApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iKITTApp.swift; sourceTree = "<group>"; };
+		1B16CBC77561EFBA3E54B5E3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		10B308056614071E904BECD5 /* Audio */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Audio; sourceTree = "<group>"; };
+		71F5A27852FA23BD3EDDAC13 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		A6F2FF437464A7B9F342F7E3 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		5E2A38F47AD0FAC535548450 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		6B114D72788B7770C332DBDE /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		288A6B6B809092F66D636983 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7CA7C2AE8BA9C0C0B11A8BB2 /* AVFoundation.framework in Frameworks */,
+				30D59737CEB76B5E722937DE /* CoreLocation.framework in Frameworks */,
+				DFDCF92847C4DE29F122AEC3 /* CoreMotion.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		28E3E38B2E93084D13096EB0 = {
+			isa = PBXGroup;
+			children = (
+				0E092EF01798D12B8EAD596F /* iKITT */,
+				2BABE82394054A569C45D72D /* Products */,
+				FDF2C105DEE67A1DB2EF1146 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		2BABE82394054A569C45D72D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				24548999D16606BC3E6866CF /* iKITT.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FDF2C105DEE67A1DB2EF1146 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A6F2FF437464A7B9F342F7E3 /* AVFoundation.framework */,
+				5E2A38F47AD0FAC535548450 /* CoreLocation.framework */,
+				6B114D72788B7770C332DBDE /* CoreMotion.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		0E092EF01798D12B8EAD596F /* iKITT */ = {
+			isa = PBXGroup;
+			children = (
+				403FC969DDFD2FAFDEA36CE8 /* iKITTApp.swift */,
+				A9E49C8D218D99CF2F8C959E /* AppModel.swift */,
+				9B85961BEB1C6EA1AD2B0B01 /* AppSettings.swift */,
+				6D3F5DB2411C49A20F846B44 /* Core */,
+				0D25F1B8EC770406B0D7A461 /* Services */,
+				96F0A4F37A3D15A73056FD91 /* Views */,
+				6F125E731561D534706297E8 /* Resources */,
+			);
+			path = iKITT;
+			sourceTree = "<group>";
+		};
+		6D3F5DB2411C49A20F846B44 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				9E2A7072F345A77CCB9DF2C7 /* DashboardLayout.swift */,
+				CF633245898E029E652A0311 /* DashboardMath.swift */,
+				7F9F16AD4FADB5D3E9C6A133 /* SampleCatalog.swift */,
+				3B10B5EE8D0BCC206BFD26D7 /* SettingsOptions.swift */,
+				DC91EEDADB728C28EDE76799 /* SettingsValues.swift */,
+				95F4A25BF01BE71E8D127EBB /* ShuffleSchedule.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		0D25F1B8EC770406B0D7A461 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				A66FF9266E0CD693E042430F /* AudioService.swift */,
+				DAAC6272093245E3D43CAC2F /* ClickPlayer.swift */,
+				0B5252027A65084404305E65 /* DashboardModel.swift */,
+				FEB9F9BBF3654ECC98A257E4 /* MotionService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		96F0A4F37A3D15A73056FD91 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				043E58AAB5FD23E56BDC0475 /* Components.swift */,
+				F23C4A22FF97F2AF93869C34 /* DashboardView.swift */,
+				7466CA8E35DC72581CF76B4D /* FlipContainer.swift */,
+				96C758A68DEC2753A81F4486 /* InfoView.swift */,
+				8209B82D5D310C40E7866A6B /* KittView.swift */,
+				57B7E6A14AB81C764329AD41 /* LayoutConversions.swift */,
+				4E4CD1EFCCFBBE26D4F194E4 /* LedMeterView.swift */,
+				48036DA948583004087BA72C /* RootView.swift */,
+				B0672020E8B90DBDEAFA06B8 /* SettingsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		6F125E731561D534706297E8 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				1B16CBC77561EFBA3E54B5E3 /* Assets.xcassets */,
+				10B308056614071E904BECD5 /* Audio */,
+				71F5A27852FA23BD3EDDAC13 /* PrivacyInfo.xcprivacy */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		AED8E6604D723C5DF0BE217F /* iKITT */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CC6DBC90C70E44A70C131A9F /* Build configuration list for PBXNativeTarget "iKITT" */;
+			buildPhases = (
+				CC09E87957765038C4E59C07 /* Sources */,
+				288A6B6B809092F66D636983 /* Frameworks */,
+				294198C9542D138E0F5D8FCB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = iKITT;
+			productName = iKITT;
+			productReference = 24548999D16606BC3E6866CF /* iKITT.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2C477C41AB74382BC44C9AEA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2700;
+				LastUpgradeCheck = 2700;
+				TargetAttributes = {
+					AED8E6604D723C5DF0BE217F = {
+						CreatedOnToolsVersion = 27.0;
+					};
+				};
+			};
+			buildConfigurationList = ECB27200A801E2AB55C24729 /* Build configuration list for PBXProject "iKITT" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 28E3E38B2E93084D13096EB0;
+			productRefGroup = 2BABE82394054A569C45D72D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				AED8E6604D723C5DF0BE217F /* iKITT */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		294198C9542D138E0F5D8FCB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				57F13D7CC50412DDEF506349 /* Assets.xcassets in Resources */,
+				32EB0B881B0AE1E30EB2B0A0 /* Audio in Resources */,
+				6F5B3684AC6CDA946581D253 /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CC09E87957765038C4E59C07 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				22EEE07320C07D2B9CACCD7E /* AppModel.swift in Sources */,
+				8E067E3E8C43EA1B1AC931BD /* AppSettings.swift in Sources */,
+				B252AC3167331DA4BF57706C /* DashboardLayout.swift in Sources */,
+				1F2D27CEAAE4A23FAD3ACCCA /* DashboardMath.swift in Sources */,
+				DA13EE1C152553974963A9F4 /* SampleCatalog.swift in Sources */,
+				2599FD86D5295D347C1784CA /* SettingsOptions.swift in Sources */,
+				F9C00114800E7889CDA90F2E /* SettingsValues.swift in Sources */,
+				4DA02A2EE55CD94DA8D1825D /* ShuffleSchedule.swift in Sources */,
+				5637831A6F299E7AEF6D88B4 /* AudioService.swift in Sources */,
+				B3405F3ABDD401CB684DF324 /* ClickPlayer.swift in Sources */,
+				9E1C3CF6F98C1A6E7542800B /* DashboardModel.swift in Sources */,
+				EB0CE36398E3FF41C52C5C0B /* MotionService.swift in Sources */,
+				CF86BCC501FAE1D1BC63E9AE /* Components.swift in Sources */,
+				F6BFF634A69B3E3ABDBEBAFE /* DashboardView.swift in Sources */,
+				87511627AAB7E958D36ADF5C /* FlipContainer.swift in Sources */,
+				559592FEF269733A2F390551 /* InfoView.swift in Sources */,
+				2BBB507D94BEF56DF2E8E0D9 /* KittView.swift in Sources */,
+				9057BA77E039279BBF946CE7 /* LayoutConversions.swift in Sources */,
+				AA06B9E4CFC40CCF2E5B0958 /* LedMeterView.swift in Sources */,
+				A0A398DC658DDB95D801F794 /* RootView.swift in Sources */,
+				56C992A2B974A9B80455E8EF /* SettingsView.swift in Sources */,
+				D5659BCF2F31DB50A8680355 /* iKITTApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		117AE437A3B7ABC328CC038E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		6155D8E0A4EB1D82146E88C6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		D11483B483A5BF42F56288A8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = iKITT;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "iKITT uses your location to show speed and heading on the dashboard.";
+				INFOPLIST_KEY_NSMotionUsageDescription = "Shake your iPhone to trigger Turbo Boost in iKITT.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
+				INFOPLIST_KEY_UIViewControllerBasedStatusBarAppearance = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mentation.ikitt;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		992428A25A48860E3D3577BD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = iKITT;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "iKITT uses your location to show speed and heading on the dashboard.";
+				INFOPLIST_KEY_NSMotionUsageDescription = "Shake your iPhone to trigger Turbo Boost in iKITT.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
+				INFOPLIST_KEY_UIViewControllerBasedStatusBarAppearance = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mentation.ikitt;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		ECB27200A801E2AB55C24729 /* Build configuration list for PBXProject "iKITT" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				117AE437A3B7ABC328CC038E /* Debug */,
+				6155D8E0A4EB1D82146E88C6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CC6DBC90C70E44A70C131A9F /* Build configuration list for PBXNativeTarget "iKITT" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D11483B483A5BF42F56288A8 /* Debug */,
+				992428A25A48860E3D3577BD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2C477C41AB74382BC44C9AEA /* Project object */;
+}
