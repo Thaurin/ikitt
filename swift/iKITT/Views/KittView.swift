@@ -15,15 +15,13 @@ struct KittView: View {
                 bottomBar
             }
         }
-        .overlayPreferenceValue(VoiceboxFramePreferenceKey.self) { anchor in
+        .overlayPreferenceValue(VoiceboxRectPreferenceKey.self) { rect in
             GeometryReader { proxy in
-                if let anchor {
-                    VoiceboxZoomLayer(
-                        model: model,
-                        smallRect: proxy[anchor],
-                        fullSize: proxy.size
-                    )
-                }
+                VoiceboxZoomLayer(
+                    model: model,
+                    smallRect: rect,
+                    fullSize: proxy.size
+                )
             }
             .ignoresSafeArea()
         }
@@ -134,16 +132,19 @@ struct KittView: View {
                 .accessibilityLabel(Text(page.title))
             }
 
-            voiceboxAnchor
-                .frame(
-                    width: PortraitLayout.voiceboxRect.width,
-                    height: PortraitLayout.voiceboxRect.height
+            voicebox
+                .background(
+                    GeometryReader { geometry in
+                        Color.clear.preference(
+                            key: VoiceboxRectPreferenceKey.self,
+                            value: geometry.frame(in: .global)
+                        )
+                    }
                 )
                 .position(
                     x: PortraitLayout.voiceboxRect.midX,
                     y: PortraitLayout.voiceboxRect.midY
                 )
-                .anchorPreference(key: VoiceboxFramePreferenceKey.self, value: .bounds) { $0 }
         }
         .frame(
             width: PortraitLayout.canvasSize.width,
@@ -156,8 +157,35 @@ struct KittView: View {
         .consoleCard()
     }
 
-    private var voiceboxAnchor: some View {
-        Color.clear
+    private var voicebox: some View {
+        Image("voicebox\(model.audio.voiceboxFrameIndex)")
+            .resizable()
+            .interpolation(.high)
+            .frame(
+                width: PortraitLayout.voiceboxRect.width,
+                height: PortraitLayout.voiceboxRect.height
+            )
+            .contentShape(Rectangle())
+            .gesture(
+                TapGesture(count: 2)
+                    .onEnded { _ in model.toggleVoiceboxZoom() }
+                    .exclusively(
+                        before: TapGesture()
+                            .onEnded { _ in model.playRandom() }
+                    )
+            )
+            .accessibilityElement()
+            .accessibilityLabel("KITT voicebox")
+            .accessibilityHint("Tap to play a random sample. Double-tap to zoom.")
+            .accessibilityAddTraits(.isButton)
+            .accessibilityAction {
+                model.playRandom()
+            }
+            .accessibilityAction(named: "Zoom") {
+                model.toggleVoiceboxZoom()
+            }
+            .allowsHitTesting(!model.voiceboxZoomed)
+            .accessibilityHidden(model.voiceboxZoomed)
     }
 
     private func isButtonImageVisible(_ button: SideButtonLayout) -> Bool {
@@ -170,11 +198,11 @@ struct KittView: View {
     }
 }
 
-private struct VoiceboxFramePreferenceKey: PreferenceKey {
-    nonisolated(unsafe) static var defaultValue: Anchor<CGRect>? = nil
+private struct VoiceboxRectPreferenceKey: PreferenceKey {
+    nonisolated(unsafe) static var defaultValue: CGRect = .zero
 
-    static func reduce(value: inout Anchor<CGRect>?, nextValue: () -> Anchor<CGRect>?) {
-        value = nextValue() ?? value
+    static func reduce(value: inout CGRect, nextValue: () -> CGRect) {
+        value = nextValue()
     }
 }
 
@@ -187,14 +215,12 @@ private struct VoiceboxZoomLayer: View {
         Image("voicebox\(model.audio.voiceboxFrameIndex)")
             .resizable()
             .interpolation(.high)
+            .scaledToFill()
             .frame(
                 width: model.voiceboxZoomed ? fullSize.width : smallRect.width,
                 height: model.voiceboxZoomed ? fullSize.height : smallRect.height
             )
-            .position(
-                x: model.voiceboxZoomed ? fullSize.width / 2 : smallRect.midX,
-                y: model.voiceboxZoomed ? fullSize.height / 2 : smallRect.midY
-            )
+            .clipped()
             .contentShape(Rectangle())
             .gesture(
                 TapGesture(count: 2)
@@ -204,7 +230,6 @@ private struct VoiceboxZoomLayer: View {
                             .onEnded { _ in model.playRandom() }
                     )
             )
-            .animation(.easeInOut(duration: 0.30), value: model.voiceboxZoomed)
             .accessibilityElement()
             .accessibilityLabel(
                 Text(model.voiceboxZoomed ? "Zoomed KITT voicebox" : "KITT voicebox")
@@ -223,5 +248,13 @@ private struct VoiceboxZoomLayer: View {
             .accessibilityAction(named: Text(model.voiceboxZoomed ? "Zoom out" : "Zoom")) {
                 model.toggleVoiceboxZoom()
             }
+            .position(
+                x: model.voiceboxZoomed ? fullSize.width / 2 : smallRect.midX,
+                y: model.voiceboxZoomed ? fullSize.height / 2 : smallRect.midY
+            )
+            .opacity(model.voiceboxZoomed ? 1 : 0)
+            .allowsHitTesting(model.voiceboxZoomed)
+            .accessibilityHidden(!model.voiceboxZoomed)
+            .animation(.easeInOut(duration: 0.30), value: model.voiceboxZoomed)
     }
 }
