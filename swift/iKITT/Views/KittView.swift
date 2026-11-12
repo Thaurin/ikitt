@@ -3,26 +3,23 @@ import SwiftUI
 struct KittView: View {
     let model: AppModel
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Namespace private var voiceboxNamespace
 
     var body: some View {
         ZStack {
-            if model.voiceboxZoomed {
-                VoiceboxZoomView(model: model)
-                    .transition(.opacity.combined(with: .scale(scale: 0.96)))
-                    .zIndex(20)
-            } else {
-                VStack(spacing: 0) {
-                    logoBar
-                    ScaledCanvas(designSize: PortraitLayout.canvasSize.cgSize) {
-                        console
-                    }
-                    .padding(.horizontal, 8)
-                    bottomBar
+            VStack(spacing: 0) {
+                logoBar
+                ScaledCanvas(designSize: PortraitLayout.canvasSize.cgSize) {
+                    console
                 }
-                .transition(.opacity)
+                .padding(.horizontal, 8)
+                bottomBar
             }
+
+            VoiceboxZoomLayer(model: model, namespace: voiceboxNamespace)
+                .zIndex(20)
         }
-        .animation(.easeInOut(duration: 0.3), value: model.voiceboxZoomed)
+        .animation(.easeInOut(duration: 0.35), value: model.voiceboxZoomed)
         .sensoryFeedback(.selection, trigger: model.selectedPage)
     }
 
@@ -33,7 +30,7 @@ struct KittView: View {
             .scaledToFit()
             .frame(width: 168)
             .opacity(model.showsLogo ? 1 : 0)
-            .offset(y: (model.showsLogo || reduceMotion) ? 0 : -28)
+            .offset(y: (model.showsLogo || reduceMotion) ? 0 : -90)
             .frame(maxWidth: .infinity)
             .frame(height: 62)
             .animation(.easeOut(duration: 0.75), value: model.showsLogo)
@@ -130,7 +127,7 @@ struct KittView: View {
                 .accessibilityLabel(Text(page.title))
             }
 
-            voicebox
+            voiceboxAnchor
                 .frame(
                     width: PortraitLayout.voiceboxRect.width,
                     height: PortraitLayout.voiceboxRect.height
@@ -139,6 +136,12 @@ struct KittView: View {
                     x: PortraitLayout.voiceboxRect.midX,
                     y: PortraitLayout.voiceboxRect.midY
                 )
+                .matchedGeometryEffect(
+                    id: "voicebox",
+                    in: voiceboxNamespace,
+                    isSource: !model.voiceboxZoomed
+                )
+                .allowsHitTesting(!model.voiceboxZoomed)
         }
         .frame(
             width: PortraitLayout.canvasSize.width,
@@ -151,14 +154,8 @@ struct KittView: View {
         .consoleCard()
     }
 
-    private var voicebox: some View {
-        Image("voicebox\(model.audio.voiceboxFrameIndex)")
-            .resizable()
-            .interpolation(.high)
-            .frame(
-                width: PortraitLayout.voiceboxRect.width,
-                height: PortraitLayout.voiceboxRect.height
-            )
+    private var voiceboxAnchor: some View {
+        Color.clear
             .contentShape(Rectangle())
             .gesture(
                 TapGesture(count: 2)
@@ -178,6 +175,7 @@ struct KittView: View {
             .accessibilityAction(named: "Zoom") {
                 model.toggleVoiceboxZoom()
             }
+            .accessibilityHidden(model.voiceboxZoomed)
     }
 
     private func isButtonImageVisible(_ button: SideButtonLayout) -> Bool {
@@ -190,30 +188,37 @@ struct KittView: View {
     }
 }
 
-private struct VoiceboxZoomView: View {
+private struct VoiceboxZoomLayer: View {
     let model: AppModel
+    let namespace: Namespace.ID
 
     var body: some View {
         GeometryReader { proxy in
             ZStack {
-                Color.black
-
                 Image("voicebox\(model.audio.voiceboxFrameIndex)")
                     .resizable()
                     .interpolation(.high)
-                    .scaledToFill()
                     .frame(width: proxy.size.width, height: proxy.size.height)
-                    .clipped()
+                    .matchedGeometryEffect(
+                        id: "voicebox",
+                        in: namespace,
+                        isSource: model.voiceboxZoomed
+                    )
 
-                VStack {
-                    Spacer()
-                    Text("Tap for a random sample. Double-tap to close.")
-                        .font(.footnote)
-                        .multilineTextAlignment(.center)
-                        .foregroundStyle(Color.white.opacity(0.5))
-                        .padding(.bottom, 36)
+                if model.voiceboxZoomed {
+                    VStack {
+                        Spacer()
+                        Text("Tap for a random sample. Double-tap to close.")
+                            .font(.footnote)
+                            .multilineTextAlignment(.center)
+                            .foregroundStyle(Color.white.opacity(0.55))
+                            .shadow(color: .black.opacity(0.8), radius: 4, y: 1)
+                            .padding(.bottom, 36)
+                    }
+                    .transition(.opacity)
                 }
             }
+            .frame(width: proxy.size.width, height: proxy.size.height)
             .contentShape(Rectangle())
             .gesture(
                 TapGesture(count: 2)
@@ -223,9 +228,9 @@ private struct VoiceboxZoomView: View {
                             .onEnded { _ in model.playRandom() }
                     )
             )
+            .allowsHitTesting(model.voiceboxZoomed)
         }
         .ignoresSafeArea()
-        .background(Color.black)
         .accessibilityElement()
         .accessibilityLabel("Zoomed KITT voicebox")
         .accessibilityHint("Tap to play a random sample. Double-tap to zoom out.")
@@ -235,5 +240,6 @@ private struct VoiceboxZoomView: View {
         .accessibilityAction(named: "Zoom out") {
             model.toggleVoiceboxZoom()
         }
+        .accessibilityHidden(!model.voiceboxZoomed)
     }
 }
